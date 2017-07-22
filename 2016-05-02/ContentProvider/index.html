@@ -1,0 +1,943 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,ContentProvider," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="前言ContentProvider虽然与Activity、Service、BroadcastReceiver齐名为Android四大组件。但如果你不是特别开发一款与其他APP有数据交互的应用，它的使用频率远没有另外三者高。进而有些开发者可能在做过几个成熟应用后，对ContentProvider的理解还是不够深入，无法独立完成ContentProvider功能的开发。网上博客对这一块的内容介绍的也是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ContentProvider从入门到精通">
+<meta property="og:url" content="http://pengtao.me/2016-05-02/ContentProvider/index.html">
+<meta property="og:site_name" content="CPPAlien">
+<meta property="og:description" content="前言ContentProvider虽然与Activity、Service、BroadcastReceiver齐名为Android四大组件。但如果你不是特别开发一款与其他APP有数据交互的应用，它的使用频率远没有另外三者高。进而有些开发者可能在做过几个成熟应用后，对ContentProvider的理解还是不够深入，无法独立完成ContentProvider功能的开发。网上博客对这一块的内容介绍的也是">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1362430-1857f913ab2e7a3d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1362430-a336044d52818448.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1362430-b39bc91ec8e272af.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-06-04T07:11:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ContentProvider从入门到精通">
+<meta name="twitter:description" content="前言ContentProvider虽然与Activity、Service、BroadcastReceiver齐名为Android四大组件。但如果你不是特别开发一款与其他APP有数据交互的应用，它的使用频率远没有另外三者高。进而有些开发者可能在做过几个成熟应用后，对ContentProvider的理解还是不够深入，无法独立完成ContentProvider功能的开发。网上博客对这一块的内容介绍的也是">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1362430-1857f913ab2e7a3d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://pengtao.me/2016-05-02/ContentProvider/"/>
+
+
+
+
+
+  <title>ContentProvider从入门到精通 | CPPAlien</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1261961389&web_id=1261961389" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CPPAlien</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">彭涛的博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://pengtao.me/2016-05-02/ContentProvider/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chris Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CPPAlien">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                ContentProvider从入门到精通
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-02T00:00:00+08:00">
+                2016-05-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            <!--noindex-->
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016-05-02/ContentProvider/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count hc-comment-count" data-xid="2016-05-02/ContentProvider/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+              <!--/noindex-->
+            
+          
+
+          
+          
+             <span id="/2016-05-02/ContentProvider/" class="leancloud_visitors" data-flag-title="ContentProvider从入门到精通">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>ContentProvider虽然与Activity、Service、BroadcastReceiver齐名为Android四大组件。但如果你不是特别开发一款与其他APP有数据交互的应用，它的使用频率远没有另外三者高。进而有些开发者可能在做过几个成熟应用后，对ContentProvider的理解还是不够深入，无法独立完成ContentProvider功能的开发。网上博客对这一块的内容介绍的也是比较复杂，不适合初学者研究学习，此篇希望能全面介绍下ContentProvider，从ContentProvider在框架中所充当的角色，到ContentResolver的使用，到URI的概念，再到数据共享的方法和权限管理，一步步的让大家对ContentProvider有个全面的认识。</p>
+<h4 id="ContentProvider的角色"><a href="#ContentProvider的角色" class="headerlink" title="ContentProvider的角色"></a>ContentProvider的角色</h4><p>ContentProvider一般为存储和获取数据提供统一的接口，可以在不同的应用程序之间共享数据。</p>
+<p>之所以使用ContentProvider，主要有以下几个理由：<br>1，ContentProvider提供了对底层数据存储方式的抽象。比如下图中，底层使用了SQLite数据库，在用了ContentProvider封装后，即使你把数据库换成MongoDB，也不会对上层数据使用层代码产生影响。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1362430-1857f913ab2e7a3d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="ContentProvider角色"></p>
+<p>2，Android框架中的一些类需要ContentProvider类型数据。如果你想让你的数据可以使用在如SyncAdapter, Loader, CursorAdapter等类上，那么你就需要为你的数据做一层ContentProvider封装。</p>
+<p>3，第三个原因也是最主要的原因，是ContentProvider为应用间的数据交互提供了一个安全的环境。它准许你把自己的应用数据根据需求开放给其他应用进行增、删、改、查，而不用担心直接开放数据库权限而带来的安全问题。</p>
+<p>我们知道了ContentProvider是对数据层的封装后，那么大家可能会问我们要如何对ContentProvider进行增，删，改，查的操作呢？下面我们来介绍一个新的类ContentResolver，我们可以通过它，来对不同的ContentProvider进行操作。</p>
+<h4 id="ContentResolver"><a href="#ContentResolver" class="headerlink" title="ContentResolver"></a>ContentResolver</h4><p>有些人可能会疑惑，为什么我们不直接访问Provider，而是又在上面加了一层ContentResolver来进行对其的操作，这样岂不是更复杂了吗？其实不然，大家要知道一台手机中可不是只有一个Provider内容，它可能安装了很多含有Provider的应用，比如联系人应用，日历应用，字典应用等等。有如此多的Provider，如果你开发一款应用要使用其中多个，如果让你去了解每个ContentProvider的不同实现，岂不是要头都大了。所以Android为我们提供了ContentResolver来统一管理与不同ContentProvider间的操作。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1362430-a336044d52818448.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="ContentResolver角色"></p>
+<p>在<a href="https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/core/java/android/content/Context.java" target="_blank" rel="external">Context.java</a>的源码中有一段<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/** Return a ContentResolver instance for your application&apos;s package. */</div><div class="line"> public abstract ContentResolver getContentResolver();</div></pre></td></tr></table></figure></p>
+<p>所以我们可以通过在所有继承Context的类中通过调用<code>getContentResolver()</code>来获得<code>ContentResolver</code>。 </p>
+<p>可能又有童鞋会问，那ContentResolver是如何来区别不同的ContentProvider的呢？这就涉及到URI（Uniform Resource Identifier）问题，对URI是什么还不明白的童鞋请自行Google。</p>
+<h4 id="ContentProvider中的URI"><a href="#ContentProvider中的URI" class="headerlink" title="ContentProvider中的URI"></a>ContentProvider中的URI</h4><p>ContentProvider中的URI有固定格式，如下图：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1362430-b39bc91ec8e272af.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="URI"><br><strong>Authority：</strong>授权信息，用以区别不同的ContentProvider；<br><strong>Path：</strong>表名，用以区分ContentProvider中不同的数据表；<br><strong>Id：</strong>Id号，用以区别表中的不同数据；</p>
+<p>URI组装代码示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public class TestContract &#123;</div><div class="line"></div><div class="line">    protected static final String CONTENT_AUTHORITY = &quot;me.pengtao.contentprovidertest&quot;;</div><div class="line">    protected static final Uri BASE_CONTENT_URI = Uri.parse(&quot;content://&quot; + CONTENT_AUTHORITY);</div><div class="line"></div><div class="line">    protected static final String PATH_TEST = &quot;test&quot;;</div><div class="line">    public static final class TestEntry implements BaseColumns &#123;</div><div class="line"></div><div class="line">        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_TEST).build();</div><div class="line">        protected static Uri buildUri(long id) &#123;</div><div class="line">            return ContentUris.withAppendedId(CONTENT_URI, id);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        protected static final String TABLE_NAME = &quot;test&quot;;</div><div class="line"></div><div class="line">        public static final String COLUMN_NAME = &quot;name&quot;;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>从上面代码我们可以看到，我们创建了一个<br><code>content://me.pengtao.contentprovidertest/test</code>的uri，并且开了一个静态方法，用以在有新数据产生时根据id生成新的uri。下面介绍下如何把此uri映射到数据库表中。</p>
+<h4 id="实作"><a href="#实作" class="headerlink" title="实作"></a>实作</h4><p>首先我们创建一个自己的<code>TestProvider</code>继承<code>ContentProvider</code>。默认该Provider需要实现如下六个方法，<code>onCreate()</code>, <code>query(Uri, String[], String, String[], String)</code>,<code>insert(Uri, ContentValues)</code>, <code>update(Uri, ContentValues, String, String[])</code>, <code>delete(Uri, String, String[])</code>, <code>getType(Uri)</code>，方法的具体介绍可以参考<br><a href="http://developer.android.com/reference/android/content/ContentProvider.html" target="_blank" rel="external">http://developer.android.com/reference/android/content/ContentProvider.html</a> </p>
+<p>下面我们以实现insert和query方法为例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">private final static int TEST = 100;</div><div class="line"></div><div class="line">static UriMatcher buildUriMatcher() &#123;</div><div class="line">    final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);</div><div class="line">    final String authority = TestContract.CONTENT_AUTHORITY;</div><div class="line"></div><div class="line">    matcher.addURI(authority, TestContract.PATH_TEST, TEST);</div><div class="line"></div><div class="line">    return matcher;</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Nullable</div><div class="line">@Override</div><div class="line">public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) &#123;</div><div class="line">    final SQLiteDatabase db = mOpenHelper.getReadableDatabase();</div><div class="line"></div><div class="line">    Cursor cursor = null;</div><div class="line">    switch ( buildUriMatcher().match(uri)) &#123;</div><div class="line">        case TEST:</div><div class="line">            cursor = db.query(TestContract.TestEntry.TABLE_NAME, projection, selection, selectionArgs, sortOrder, null, null);</div><div class="line">            break;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    return cursor;</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Nullable</div><div class="line">@Override</div><div class="line">public Uri insert(Uri uri, ContentValues values) &#123;</div><div class="line">    final SQLiteDatabase db = mOpenHelper.getWritableDatabase();</div><div class="line">    Uri returnUri;</div><div class="line">    long _id;</div><div class="line">    switch ( buildUriMatcher().match(uri)) &#123;</div><div class="line">        case TEST:</div><div class="line">            _id = db.insert(TestContract.TestEntry.TABLE_NAME, null, values);</div><div class="line">            if ( _id &gt; 0 )</div><div class="line">                returnUri = TestContract.TestEntry.buildUri(_id);</div><div class="line">            else</div><div class="line">                throw new android.database.SQLException(&quot;Failed to insert row into &quot; + uri);</div><div class="line">            break;</div><div class="line">        default:</div><div class="line">            throw new android.database.SQLException(&quot;Unknown uri: &quot; + uri);</div><div class="line">    &#125;</div><div class="line">    return returnUri;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>此例中我们可以看到，我们根据path的不同，来区别对不同的数据库表进行操作，从而完成uri与具体数据库间的映射关系。</p>
+<p>因为ContentProvider作为四大组件之一，所以还需要在AndroidManifest.xml中注册一下。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;provider    </div><div class="line">    android:authorities=&quot;me.pengtao.contentprovidertest&quot;  </div><div class="line">    android:name=&quot;.provider.TestProvider&quot; /&gt;</div></pre></td></tr></table></figure></p>
+<p>然后你就可以使用<code>getContentResolver()</code>方法来对该ContentProvider进行操作了，ContentResolver对应ContentProvider也有insert，query，delete等方法，详情请参考：<br><a href="http://developer.android.com/reference/android/content/ContentResolver.html" target="_blank" rel="external">http://developer.android.com/reference/android/content/ContentResolver.html</a> </p>
+<p>此处因为我们只实现了ContentProvider的query和insert的方法，所以我们可以进行插入和查询处理。如下我们可以在某个Activity中进行如下操作，先插入一个数据<code>peng</code>，然后再从从表中读取第一行数据中的第二个字段的值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">ContentValues contentValues = new ContentValues();</div><div class="line">contentValues.put(TestContract.TestEntry.COLUMN_NAME, &quot;peng&quot;);</div><div class="line">contentValues.put(TestContract.TestEntry._ID, System.currentTimeMillis());</div><div class="line">getContentResolver().insert(TestContract.TestEntry.CONTENT_URI, contentValues);</div><div class="line"></div><div class="line">Cursor cursor = getContentResolver().query(TestContract.TestEntry.CONTENT_URI, null, null, null, null);</div><div class="line"></div><div class="line">try &#123;</div><div class="line">    Log.e(&quot;ContentProviderTest&quot;, &quot;total data number = &quot; + cursor.getCount());</div><div class="line">    cursor.moveToFirst();</div><div class="line">    Log.e(&quot;ContentProviderTest&quot;, &quot;total data number = &quot; + cursor.getString(1));</div><div class="line">&#125; finally &#123;</div><div class="line">    cursor.close();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="数据共享"><a href="#数据共享" class="headerlink" title="数据共享"></a>数据共享</h4><p>以上例子中创建的ContentProvider只能在本应用内访问，那如何让其他应用也可以访问此应用中的数据呢，一种方法是向此应用设置一个<code>android:sharedUserId</code>，然后需要访问此数据的应用也设置同一个<code>sharedUserId</code>，具有同样的sharedUserId的应用间可以共享数据。</p>
+<p>但此种方法不够安全，也无法做到对不同数据进行不同读写权限的管理，下面我们就来详细介绍下ContentProvider中的数据共享规则。</p>
+<p>首先我们先介绍下，共享数据所涉及到的几个重要标签：<br><code>android:exported</code> 设置此provider是否可以被其他应用使用。<br><code>android:readPermission</code> 该provider的读权限的标识<br><code>android:writePermission</code> 该provider的写权限标识<br><code>android:permission</code> provider读写权限标识<br><code>android:grantUriPermissions</code> 临时权限标识，true时，意味着该provider下所有数据均可被临时使用；false时，则反之，但可以通过设置<code>&lt;grant-uri-permission&gt;</code>标签来指定哪些路径可以被临时使用。这么说可能还是不容易理解，我们举个例子，比如你开发了一个邮箱应用，其中含有附件需要第三方应用打开，但第三方应用又没有向你申请该附件的读权限，但如果你设置了此标签，则可以在start第三方应用时，传入<code>FLAG_GRANT_READ_URI_PERMISSION</code>或<code>FLAG_GRANT_WRITE_URI_PERMISSION</code>来让第三方应用临时具有读写该数据的权限。</p>
+<p>知道了这些标签用法后，让我们改写下AndroidManifest.xml，让ContentProvider可以被其他应用查询。</p>
+<p>声明一个permission<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;permission android:name=&quot;me.pengtao.READ&quot; android:protectionLevel=&quot;normal&quot;/&gt;</div></pre></td></tr></table></figure></p>
+<p>然后改变provider标签为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;provider</div><div class="line">    android:authorities=&quot;me.pengtao.contentprovidertest&quot;</div><div class="line">    android:name=&quot;.provider.TestProvider&quot;</div><div class="line">    android:readPermission=&quot;me.pengtao.READ&quot;</div><div class="line">    android:exported=&quot;true&quot;&gt;</div><div class="line">&lt;/provider&gt;</div></pre></td></tr></table></figure></p>
+<p>则在其他应用中可以使用以下权限来对TestProvider进行访问。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;uses-permission android:name=&quot;me.pengtao.READ&quot;/&gt;</div></pre></td></tr></table></figure></p>
+<p>有人可能又想问，如果我的provider里面包含了不同的数据表，我希望对不同的数据表有不同的权限操作，要如何做呢？Android为这种场景提供了provider的子标签<code>&lt;path-permission&gt;</code>，path-permission包括了以下几个标签。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;path-permission android:path=&quot;string&quot;</div><div class="line">                 android:pathPrefix=&quot;string&quot;</div><div class="line">                 android:pathPattern=&quot;string&quot;</div><div class="line">                 android:permission=&quot;string&quot;</div><div class="line">                 android:readPermission=&quot;string&quot;</div><div class="line">                 android:writePermission=&quot;string&quot; /&gt;</div></pre></td></tr></table></figure></p>
+<p>可以对不同path设置不同的权限规则，具体如何设定我这里就不做详细介绍了，可以参考<br><a href="http://developer.android.com/guide/topics/manifest/path-permission-element.html" target="_blank" rel="external">http://developer.android.com/guide/topics/manifest/path-permission-element.html</a></p>
+<h4 id="相关代码"><a href="#相关代码" class="headerlink" title="相关代码"></a>相关代码</h4><p>ContentProviderTest<br><a href="https://github.com/CPPAlien/ContentProviderTest" target="_blank" rel="external">https://github.com/CPPAlien/ContentProviderTest</a></p>
+<p>ContentResolverTest<br><a href="https://github.com/CPPAlien/ContentResolverTest" target="_blank" rel="external">https://github.com/CPPAlien/ContentResolverTest</a></p>
+<p><em>注：ContentResolverTest是读取ContentProviderTest中的数据来显示，所以需要先安装ContentProviderTest。</em></p>
+<blockquote>
+<p><strong>作者简介</strong><br>彭涛(<a href="http://weibo.com/creaspan" target="_blank" rel="external">@彭涛me</a>) 致力于让技术变得易懂且有趣<br>个人博客：<a href="http://pengtao.me">http://pengtao.me</a>, GitHub地址：<a href="https://github.com/CPPAlien" target="_blank" rel="external">https://github.com/CPPAlien</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/ContentProvider/" rel="tag"># ContentProvider</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016-04-18/memory-leak/" rel="next" title="Android中常见的内存泄漏">
+                <i class="fa fa-chevron-left"></i> Android中常见的内存泄漏
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016-05-11/attr-style-theme/" rel="prev" title="Attr、Style和Theme详解">
+                Attr、Style和Theme详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="hypercomments_widget"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/logo.png"
+               alt="Chris Peng" />
+          <p class="site-author-name" itemprop="name">Chris Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/CPPAlien" target="_blank" title="Github" rel="external nofollow">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/creaspan" target="_blank" title="Weibo" rel="external nofollow">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/f9246f41945e" target="_blank" title="Jianshu" rel="external nofollow">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  Jianshu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ContentProvider的角色"><span class="nav-number">2.</span> <span class="nav-text">ContentProvider的角色</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ContentResolver"><span class="nav-number">3.</span> <span class="nav-text">ContentResolver</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ContentProvider中的URI"><span class="nav-number">4.</span> <span class="nav-text">ContentProvider中的URI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实作"><span class="nav-number">5.</span> <span class="nav-text">实作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据共享"><span class="nav-number">6.</span> <span class="nav-text">数据共享</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#相关代码"><span class="nav-number">7.</span> <span class="nav-text">相关代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2014 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chris Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+		<script type="text/javascript">
+		_hcwp = window._hcwp || [];
+
+		_hcwp.push({widget:"Bloggerstream", widget_id: 90958, selector:".hc-comment-count", label: "{\%COUNT%\}" });
+
+		
+		_hcwp.push({widget:"Stream", widget_id: 90958, xid: "2016-05-02/ContentProvider/"});
+		
+
+		(function() {
+		if("HC_LOAD_INIT" in window)return;
+		HC_LOAD_INIT = true;
+		var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+		var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+		hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/90958/"+lang+"/widget.js";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hcc, s.nextSibling);
+		})();
+		</script>
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("c5zh76gq33qsUGfKFbhkiAJK-gzGzoHsz", "xj3B1vbbDnplbUmcy7eiLmGx");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

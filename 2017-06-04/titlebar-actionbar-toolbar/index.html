@@ -1,0 +1,930 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,发展史," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="写在前面bar在英语中有“门闩（shuān）”之意，我想大家一看到“闩”这个字就能马上联想到bar是啥了。当然Android中对bar的定义和门闩还是有不少区别的。Android中的bar有引导使用之作用，快速让用户了解当前页面的功能和相关操作等。本着这个原则就有了下面的bar的发展史。
+从Titlebar到Actionbar在3.0之前，Android在UI设计上还是比较简单粗暴的，当时对这个b">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从Titlebar到Actionbar再到Toolbar">
+<meta property="og:url" content="http://pengtao.me/2017-06-04/titlebar-actionbar-toolbar/index.html">
+<meta property="og:site_name" content="CPPAlien">
+<meta property="og:description" content="写在前面bar在英语中有“门闩（shuān）”之意，我想大家一看到“闩”这个字就能马上联想到bar是啥了。当然Android中对bar的定义和门闩还是有不少区别的。Android中的bar有引导使用之作用，快速让用户了解当前页面的功能和相关操作等。本着这个原则就有了下面的bar的发展史。
+从Titlebar到Actionbar在3.0之前，Android在UI设计上还是比较简单粗暴的，当时对这个b">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1362430-23bd1008230eacb9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1362430-134e9cdca73eb062.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1362430-177ed4fa1114eac1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/480">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1362430-7a84a1cc0996a3a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1362430-ae20eb549d69f191.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1362430-3af5471acfc2446a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-06-04T07:15:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从Titlebar到Actionbar再到Toolbar">
+<meta name="twitter:description" content="写在前面bar在英语中有“门闩（shuān）”之意，我想大家一看到“闩”这个字就能马上联想到bar是啥了。当然Android中对bar的定义和门闩还是有不少区别的。Android中的bar有引导使用之作用，快速让用户了解当前页面的功能和相关操作等。本着这个原则就有了下面的bar的发展史。
+从Titlebar到Actionbar在3.0之前，Android在UI设计上还是比较简单粗暴的，当时对这个b">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1362430-23bd1008230eacb9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://pengtao.me/2017-06-04/titlebar-actionbar-toolbar/"/>
+
+
+
+
+
+  <title>从Titlebar到Actionbar再到Toolbar | CPPAlien</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1261961389&web_id=1261961389" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CPPAlien</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">彭涛的博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://pengtao.me/2017-06-04/titlebar-actionbar-toolbar/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chris Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CPPAlien">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                从Titlebar到Actionbar再到Toolbar
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-04T00:00:00+08:00">
+                2017-06-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            <!--noindex-->
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017-06-04/titlebar-actionbar-toolbar/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count hc-comment-count" data-xid="2017-06-04/titlebar-actionbar-toolbar/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+              <!--/noindex-->
+            
+          
+
+          
+          
+             <span id="/2017-06-04/titlebar-actionbar-toolbar/" class="leancloud_visitors" data-flag-title="从Titlebar到Actionbar再到Toolbar">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h4><p>bar在英语中有“门闩（shuān）”之意，我想大家一看到“闩”这个字就能马上联想到bar是啥了。当然Android中对bar的定义和门闩还是有不少区别的。Android中的bar有引导使用之作用，快速让用户了解当前页面的功能和相关操作等。本着这个原则就有了下面的bar的发展史。</p>
+<h4 id="从Titlebar到Actionbar"><a href="#从Titlebar到Actionbar" class="headerlink" title="从Titlebar到Actionbar"></a>从Titlebar到Actionbar</h4><p>在3.0之前，Android在UI设计上还是比较简单粗暴的，当时对这个bar的作用定义也极为简单，就是为显示当前页面的标题，名字都命名成了Titlebar，意为标题bar。对这个bar能做的操作也很单一，设置标题，再或者加个logo啥的，再有复杂的就得自己自定义View了。这个bar长相就如下图所示，可以说丑到爆了。和当时iOS漂亮的界面简直一个天一个地，那个时代可以说是Android的试水期，只追求功能可用，而其他方面就不管了。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1362430-23bd1008230eacb9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Titlebar"></p>
+<p>当时Android在操作设计上是有物理返回按钮的，所以这个Titlebar连返回都不支持。而在那个设计往往都要对标iOS的时代，Android程序员只能自己去扩展这个功能单一的Titlebar了。自己辛苦得模仿实现iOS应用上那些漂亮的导航栏功能。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title_bar);</div></pre></td></tr></table></figure>
+<p>经过几年的发展，到Android 2.3版本，Android的各大功能基本稳定了，Android界开始对美和使用方便性有了强烈的呼声。于是2011年Google发布了Android 3.0版本，这个版本的Android在UI设计上进行了大改，除了引入了大家熟悉的Fragment外，也开始把Titlebar替换为Actionbar。Actionbar顾名思义，这个bar就不当当只是展示标题了，而是加入了Action（动作）。Android3.0的发布相当于Android一个试错的旧时代的结束，一个高速发展的新时代的开始，虽然Android3.0本身应用的范围很小。</p>
+<h4 id="Actionbar时代"><a href="#Actionbar时代" class="headerlink" title="Actionbar时代"></a>Actionbar时代</h4><p>Actionbar主要功能除了显示Title外，还提供了一致的导航和视觉体验，突出了应用的关键操作。比如你可以使用<code>SetDisplayHomeAsUpEnabled(true)</code>添加向上导航，这样在点击Actionbar左边的应用图标时会返回父视图。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1362430-134e9cdca73eb062.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>你还可以使用Menu的方式来添加当前页面的操作按钮。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1362430-177ed4fa1114eac1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/480" alt=""></p>
+<p> 你甚至还可以在Actionbar中自定义自己的View，比如你可以</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1362430-7a84a1cc0996a3a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>或者在Actionbar中加入页面切换的功能，配合Fragment的机制</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1362430-ae20eb549d69f191.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>另外Actionbar还提供了样式设定，多屏幕适配等等功能。算是解决了Titlebar的痛点，Android在顶部导航这一块终于有了自己的风格，而不再唯iOS是瞻。</p>
+<h4 id="啊哈，Toolbar"><a href="#啊哈，Toolbar" class="headerlink" title="啊哈，Toolbar"></a>啊哈，Toolbar</h4><p>又随着时代的发展，到了2014年，Android5.0发布，这个版本的发布标志着Android又进入了一个新时代，快速爆发的时代过去了，从现在起，要变得优雅，要有自己统一的风格。所以在这个版本上Google推出了<a href="https://material.io/guidelines/" target="_blank" rel="external">Material Design</a>设计语言。然后Actionbar就被重整了，Actionbar虽方便使用，功能也很强大。但它最大的缺点就是不够灵活，比如它默认只能在顶部，要想把Actionbar移到屏幕其它位置就会非常麻烦，因为它在设计上是绑定在DecorView的。你可以到<code>com.android.internal.policy.DecorView</code>中看到相关源码，比如有下面这段，把Actionbar固定在了顶部，并且横向填充。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">mShowPrimaryActionModePopup = new Runnable() &#123;</div><div class="line">	public void run() &#123;</div><div class="line">		mPrimaryActionModePopup.showAtLocation(</div><div class="line">		mPrimaryActionModeView.getApplicationWindowToken(),</div><div class="line">			Gravity.TOP | Gravity.FILL_HORIZONTAL, 0, 0);</div><div class="line">		endOnGoingFadeAnimation();</div><div class="line">		...</div><div class="line">	&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>为了满足Material Design优雅而灵活的设计原则，Google推出了更加灵活的Toolbar。你可以在一个Activity中声明多个Toolbar并且放在任意位置。并且你可以在自己的Toolbar中塞入任何你想要的View。Toolbar不是Actionbar的替代，Toolbar是Actionbar的布局方式的扩展，就像一个家庭的小孩长大了，它可以去外面干更多的事情，而也可以回家继续做一个晚辈。所以我们可以自己定义一个Toolbar，然后调用<code>setActionBar()</code>来让这个Toolbar充当Actionbar的功能，前提你需要把当前Activity主题或feature设为NoActionBar。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1362430-3af5471acfc2446a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Toolbar"></p>
+<p>关于Toolbar的详细用法，可以参考：<a href="https://developer.android.com/training/appbar/index.html" target="_blank" rel="external">Google的官方文档</a> ，这里就不做介绍了。</p>
+<blockquote>
+<p><strong>作者简介</strong><br>CPPAlien(<a href="http://weibo.com/creaspan" target="_blank" rel="external">@彭涛me</a>) 致力于让技术变得易懂且有趣<br>个人博客：<a href="http://pengtao.me">http://pengtao.me</a>, GitHub地址：<a href="https://github.com/CPPAlien" target="_blank" rel="external">https://github.com/CPPAlien</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/发展史/" rel="tag"># 发展史</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017-05-15/apk-installation-process/" rel="next" title="APK安装过程">
+                <i class="fa fa-chevron-left"></i> APK安装过程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="hypercomments_widget"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/logo.png"
+               alt="Chris Peng" />
+          <p class="site-author-name" itemprop="name">Chris Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/CPPAlien" target="_blank" title="Github" rel="external nofollow">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/creaspan" target="_blank" title="Weibo" rel="external nofollow">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/f9246f41945e" target="_blank" title="Jianshu" rel="external nofollow">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  Jianshu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从Titlebar到Actionbar"><span class="nav-number">2.</span> <span class="nav-text">从Titlebar到Actionbar</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Actionbar时代"><span class="nav-number">3.</span> <span class="nav-text">Actionbar时代</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#啊哈，Toolbar"><span class="nav-number">4.</span> <span class="nav-text">啊哈，Toolbar</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2014 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chris Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+		<script type="text/javascript">
+		_hcwp = window._hcwp || [];
+
+		_hcwp.push({widget:"Bloggerstream", widget_id: 90958, selector:".hc-comment-count", label: "{\%COUNT%\}" });
+
+		
+		_hcwp.push({widget:"Stream", widget_id: 90958, xid: "2017-06-04/titlebar-actionbar-toolbar/"});
+		
+
+		(function() {
+		if("HC_LOAD_INIT" in window)return;
+		HC_LOAD_INIT = true;
+		var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+		var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+		hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/90958/"+lang+"/widget.js";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hcc, s.nextSibling);
+		})();
+		</script>
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("c5zh76gq33qsUGfKFbhkiAJK-gzGzoHsz", "xj3B1vbbDnplbUmcy7eiLmGx");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

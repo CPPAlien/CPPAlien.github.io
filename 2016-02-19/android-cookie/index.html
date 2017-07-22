@@ -1,0 +1,924 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android,Http," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="简介Session是服务端验证客户端身份的一种机制。而Cookie是客户端存储的一种身份凭证，由服务端在回应的消息头中通过Set-Cookie字段“种”在客户端。以后每次客户端在向服务端请求时都会在消息头中带上Cookie字段。服务端就会根据Cookie的来判断此次请求是从哪个用户发过来的，是否是一次有效请求等。有关Cookie的标准定义可以参考 RFC6265。以下我们稍做介绍。
+举个例子首次打">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android端实现Cookie机制">
+<meta property="og:url" content="http://pengtao.me/2016-02-19/android-cookie/index.html">
+<meta property="og:site_name" content="CPPAlien">
+<meta property="og:description" content="简介Session是服务端验证客户端身份的一种机制。而Cookie是客户端存储的一种身份凭证，由服务端在回应的消息头中通过Set-Cookie字段“种”在客户端。以后每次客户端在向服务端请求时都会在消息头中带上Cookie字段。服务端就会根据Cookie的来判断此次请求是从哪个用户发过来的，是否是一次有效请求等。有关Cookie的标准定义可以参考 RFC6265。以下我们稍做介绍。
+举个例子首次打">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1362430-9c8ea207aabd8b0b?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1362430-3a1a34406b9d7949?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/1362430-b65d2d3117dd987c?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-07-22T05:07:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android端实现Cookie机制">
+<meta name="twitter:description" content="简介Session是服务端验证客户端身份的一种机制。而Cookie是客户端存储的一种身份凭证，由服务端在回应的消息头中通过Set-Cookie字段“种”在客户端。以后每次客户端在向服务端请求时都会在消息头中带上Cookie字段。服务端就会根据Cookie的来判断此次请求是从哪个用户发过来的，是否是一次有效请求等。有关Cookie的标准定义可以参考 RFC6265。以下我们稍做介绍。
+举个例子首次打">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/1362430-9c8ea207aabd8b0b?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://pengtao.me/2016-02-19/android-cookie/"/>
+
+
+
+
+
+  <title>Android端实现Cookie机制 | CPPAlien</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1261961389&web_id=1261961389" language="JavaScript"></script>
+  </div>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">CPPAlien</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">彭涛的博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://pengtao.me/2016-02-19/android-cookie/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Chris Peng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="CPPAlien">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android端实现Cookie机制
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-19T00:00:00+08:00">
+                2016-02-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            <!--noindex-->
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016-02-19/android-cookie/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count hc-comment-count" data-xid="2016-02-19/android-cookie/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+              <!--/noindex-->
+            
+          
+
+          
+          
+             <span id="/2016-02-19/android-cookie/" class="leancloud_visitors" data-flag-title="Android端实现Cookie机制">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>Session是服务端验证客户端身份的一种机制。而Cookie是客户端存储的一种身份凭证，由服务端在回应的消息头中通过Set-Cookie字段“种”在客户端。以后每次客户端在向服务端请求时都会在消息头中带上Cookie字段。服务端就会根据Cookie的来判断此次请求是从哪个用户发过来的，是否是一次有效请求等。有关Cookie的标准定义可以参考 <a href="https://tools.ietf.org/html/rfc6265" target="_blank" rel="external">RFC6265</a>。以下我们稍做介绍。</p>
+<h3 id="举个例子"><a href="#举个例子" class="headerlink" title="举个例子"></a>举个例子</h3><p>首次打开浏览器请求<a href="http://www.baidu.com" target="_blank" rel="external">http://www.baidu.com</a> ，我们会得到一个response消息头如下格式。<br><img src="http://upload-images.jianshu.io/upload_images/1362430-9c8ea207aabd8b0b?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="首次请求百度返回的消息头的一部分"><br>可以看到里面包含了多条Set-Cookie，Cookie是key-value形式的。每条Cookie都有一个效信息字段，有些还含有expires、domain和path等字段。其中的domain和path字段，区分了不同的cookie可以被哪些网页链接获得，如未设置domain，则使用当前的访问链接替代。比如上面的BD_HOME=0，我们在下表[本地cookie信息]中，一样可以看到它的domain为www.baidu.com，这是因为我们访问的就是这个地址。其中的expires和max-age定义了该Cookie的有效期，失效的Cookie在下次请求时不会被加入到Cookie头中。</p>
+<p>请求后我们查看浏览器的Cookie表，可以看到这些Cookie信息被“种”下了。<br><img src="http://upload-images.jianshu.io/upload_images/1362430-3a1a34406b9d7949?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="本地cookie信息"><br>此时再发送一条请求，可以看到请求的消息头如下：<br><img src="http://upload-images.jianshu.io/upload_images/1362430-b65d2d3117dd987c?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="请求消息头Cookie信息"></p>
+<p>不同网站的请求，会因为请求链接的不同，只能从浏览器取得属于自己的cookie，根据上文提到的domain和path字段来区分。关于匹配的详细规则还是可以查看<a href="https://tools.ietf.org/html/rfc6265" target="_blank" rel="external">RFC6265</a>。这边我们用domain的匹配来稍微说下，在标准的5.1.3条目是有关<code>domain matching</code>的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">A string domain-matches a given domain string if at least one of the</div><div class="line">   following conditions hold:</div><div class="line"></div><div class="line">   o  The domain string and the string are identical.  (Note that both</div><div class="line">      the domain string and the string will have been canonicalized to</div><div class="line">      lower case at this point.)</div><div class="line"></div><div class="line">   o  All of the following conditions hold:</div><div class="line"></div><div class="line">      *  The domain string is a suffix of the string.</div><div class="line"></div><div class="line">      *  The last character of the string that is not included in the</div><div class="line">         domain string is a %x2E (&quot;.&quot;) character.</div><div class="line"></div><div class="line">      *  The string is a host name (i.e., not an IP address).</div></pre></td></tr></table></figure></p>
+<p>从中我们可以看出domain要满足两点才能算是匹配，第一点，完全相同；如果第一点不满足则需要，请求链接的后缀包含存储的cookie的domain，并且不包含部分的最后一个字符还得是”.”，并且还是是个域名，而非IP地址。domain匹配成功后，还要匹配path，path的匹配要比domain复杂一些，具体可以查看标准的5.1.4。path匹配可以做到一个网站下的页面可以分别存储不同的cookie，也可以共享上层父页面的cookie，比较灵活。</p>
+<h3 id="客户端实现"><a href="#客户端实现" class="headerlink" title="客户端实现"></a>客户端实现</h3><p>Android自身所带的HttpUrlConnection方法是默认不开启Cookie存储的。不过我们可以用java提供的几个类来在Android中实现：<br>可以先在所有请求之前声明<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CookieHandler.setDefault(new CookieManager(null, CookiePolicy.ACCEPT_ALL));</div></pre></td></tr></table></figure></p>
+<p>开启此开关后，每次请求的Set-Cookie信息都会被CookieManager处理。CookieManager又会使用第一个参数传入的CookieStore来处理Cookie的存储问题，因为此处传入了null，系统会默认调用一个基于CookieStore实现的CookieStoreImpl类来处理Cookie的存储，这个类的只有基于内存的存储，当进程被杀死后，下次再进入应用，保存的Cookie信息就会丢失。所以我们需要基于CookieStore这个接口实现一个具有内存和本地双存储机制的Cookie存储类。</p>
+<p>可以参考：Fran Montiel实现的PersistentCookieStore 类：<br><a href="https://gist.github.com/franmontiel/ed12a2295566b7076161" target="_blank" rel="external">https://gist.github.com/franmontiel/ed12a2295566b7076161</a></p>
+<p>当解决了Cookie的存储后，我们就需要考虑以后我们的每次请求需要在请求的消息头中加入Cookie字段。以上用CookieStore存储下来的Cookie信息都会被保存成HttpCookie形式的信息。我们可以上面的百度例子中看到Cookie的组成样式，所以我们可以提取CookieStore中的信息并组合。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">StringBuilder cookieBuilder = new StringBuilder();</div><div class="line">String divider = &quot;&quot;;</div><div class="line">for (HttpCookie cookie : getCookies()) &#123;</div><div class="line">    cookieBuilder.append(divider);</div><div class="line">    divider = &quot;;&quot;;</div><div class="line">    cookieBuilder.append(cookie.getName());</div><div class="line">    cookieBuilder.append(&quot;=&quot;);</div><div class="line">    cookieBuilder.append(cookie.getValue());</div><div class="line">&#125;</div><div class="line">cookieString = cookieBuilder.toString();</div></pre></td></tr></table></figure></p>
+<p>然后把这个cookieString在以后的请求中加入到头中，如果你用HttpUrlConnection，你就可以<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">setRequestProperty(&quot;Cookie&quot;,cookieString);</div></pre></td></tr></table></figure></p>
+<p>如果你需要让应用中打开的WebView页面也能共享使用Cookie，则需要使用<code>android.webkit.CookieManager</code>类来设置，简单式例代码如下。注意，第一个参数要使用链接的host部分。这样让web端的不同页面也可以共享这些cookie。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">for (HttpCookie cookie : getCookies()) &#123;</div><div class="line">    CookieManager.getInstance().setCookie(Uri.parse(url).getHost(), cookie.toString());</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>OK，大功告成。</p>
+<p>以下是我在Github上开源的一个基于Volley实现的网络层框架，也包括Cookie机制的Http请求，欢迎大家fork：<br><a href="https://github.com/CPPAlien/DaVinci" target="_blank" rel="external">https://github.com/CPPAlien/DaVinci</a></p>
+<blockquote>
+<p><strong>作者简介</strong><br>彭涛(<a href="http://weibo.com/creaspan" target="_blank" rel="external">@彭涛me</a>) 致力于让技术变得易懂且有趣<br>个人博客：<a href="http://pengtao.me">http://pengtao.me</a>, GitHub地址：<a href="https://github.com/CPPAlien" target="_blank" rel="external">https://github.com/CPPAlien</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/Http/" rel="tag"># Http</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016-02-18/hold-fragment-state/" rel="next" title="Activity重建时保持Fragment状态的方法">
+                <i class="fa fa-chevron-left"></i> Activity重建时保持Fragment状态的方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016-02-29/use-strings/" rel="prev" title="你真的会用Android中Strings资源吗">
+                你真的会用Android中Strings资源吗 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="hypercomments_widget"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/logo.png"
+               alt="Chris Peng" />
+          <p class="site-author-name" itemprop="name">Chris Peng</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/CPPAlien" target="_blank" title="Github" rel="external nofollow">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/creaspan" target="_blank" title="Weibo" rel="external nofollow">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/u/f9246f41945e" target="_blank" title="Jianshu" rel="external nofollow">
+                  
+                    <i class="fa fa-fw fa-book"></i>
+                  
+                  Jianshu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#举个例子"><span class="nav-number">2.</span> <span class="nav-text">举个例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端实现"><span class="nav-number">3.</span> <span class="nav-text">客户端实现</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2014 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Chris Peng</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+		<script type="text/javascript">
+		_hcwp = window._hcwp || [];
+
+		_hcwp.push({widget:"Bloggerstream", widget_id: 90958, selector:".hc-comment-count", label: "{\%COUNT%\}" });
+
+		
+		_hcwp.push({widget:"Stream", widget_id: 90958, xid: "2016-02-19/android-cookie/"});
+		
+
+		(function() {
+		if("HC_LOAD_INIT" in window)return;
+		HC_LOAD_INIT = true;
+		var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+		var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+		hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/90958/"+lang+"/widget.js";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hcc, s.nextSibling);
+		})();
+		</script>
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("c5zh76gq33qsUGfKFbhkiAJK-gzGzoHsz", "xj3B1vbbDnplbUmcy7eiLmGx");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    
+  <url>
+    <loc>http://pengtao.me/2016-02-19/android-cookie/</loc>
+    <lastmod>2017-07-22T05:07:40.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android端实现Cookie机制</title>
+        <pubTime>2016-02-18T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Http</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://pengtao.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://pengtao.me/2016-02-18/hold-fragment-state/</loc>
+    <lastmod>2017-06-17T08:38:40.000Z</lastmod>
+    <data>
+        <display>
+        <title>Activity重建时保持Fragment状态的方法</title>
+        <pubTime>2016-02-17T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>Fragment</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://pengtao.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://pengtao.me/2017-06-04/titlebar-actionbar-toolbar/</loc>
+    <lastmod>2017-06-04T07:15:56.000Z</lastmod>
+    <data>
+        <display>
+        <title>从Titlebar到Actionbar再到Toolbar</title>
+        <pubTime>2017-06-03T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>发展史</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://pengtao.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://pengtao.me/2016-04-18/memory-leak/</loc>
+    <lastmod>2017-06-04T07:13:35.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android中常见的内存泄漏</title>
+        <pubTime>2016-04-17T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>内存</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://pengtao.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://pengtao.me/2016-09-22/proguard-obfuscation/</loc>
+    <lastmod>2017-06-04T07:12:50.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android混淆从入门到精通</title>
+        <pubTime>2016-09-21T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>混淆</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://pengtao.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://pengtao.me/2016-05-11/attr-style-theme/</loc>
+    <lastmod>2017-06-04T07:12:11.000Z</lastmod>
+    <data>
+        <display>
+        <title>Attr、Style和Theme详解</title>
+        <pubTime>2016-05-10T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>资源</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://pengtao.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://pengtao.me/2016-05-02/ContentProvider/</loc>
+    <lastmod>2017-06-04T07:11:34.000Z</lastmod>
+    <data>
+        <display>
+        <title>ContentProvider从入门到精通</title>
+        <pubTime>2016-05-01T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>ContentProvider</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://pengtao.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://pengtao.me/2015-12-30/ImageView-ScaleType/</loc>
+    <lastmod>2017-06-04T07:10:54.000Z</lastmod>
+    <data>
+        <display>
+        <title>ImageView中的ScaleType详解</title>
+        <pubTime>2015-12-29T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>布局</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://pengtao.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://pengtao.me/2016-02-29/use-strings/</loc>
+    <lastmod>2017-06-04T07:08:12.000Z</lastmod>
+    <data>
+        <display>
+        <title>你真的会用Android中Strings资源吗</title>
+        <pubTime>2016-02-28T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>资源</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://pengtao.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://pengtao.me/2017-05-15/apk-installation-process/</loc>
+    <lastmod>2017-05-30T14:54:04.000Z</lastmod>
+    <data>
+        <display>
+        <title>APK安装过程</title>
+        <pubTime>2017-05-14T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://pengtao.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+  <url>
+    <loc>http://pengtao.me/2016-12-06/OutOfMemoryError/</loc>
+    <lastmod>2017-05-17T05:52:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android中的OutOfMemoryError</title>
+        <pubTime>2016-12-05T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>内存</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://pengtao.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://pengtao.me/2015-11-09/size-in-android/</loc>
+    <lastmod>2017-05-17T05:52:34.000Z</lastmod>
+    <data>
+        <display>
+        <title>Android布局中的尺寸单位介绍</title>
+        <pubTime>2015-11-08T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>布局</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://pengtao.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://pengtao.me/2015-11-10/dir-android-code/</loc>
+    <lastmod>2017-05-17T05:51:40.000Z</lastmod>
+    <data>
+        <display>
+        <title>详解Android源码目录</title>
+        <pubTime>2015-11-09T16:00:00.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+        <tag>源码</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="http://pengtao.me/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+</urlset>
